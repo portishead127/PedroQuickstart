@@ -33,7 +33,7 @@ public class RobotHardware {
     public static final int ViperSlideMotorEncoderResolution = 752;
     public static final double CircumferenceOfWheelInMeters = 0.2356;
     public static final double WheelMotorEncoderResolution = 336;
-    public static final double WheelbaseInMeters = 0.388;
+    public static final double WheelbaseInInches = 0.388;
     public static final int TopRungRevsRight = 3230;
     public static final int BottomEncoders = 20;
     public SoundPool sounds;
