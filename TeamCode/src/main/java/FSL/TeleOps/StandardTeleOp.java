@@ -2,6 +2,7 @@ package FSL.TeleOps;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import FSL.Enums.IntakeMotorStates;
 import FSL.Enums.ViperSlideDirections;
@@ -17,10 +18,13 @@ public class StandardTeleOp extends LinearOpMode {
     boolean clawClosed = true;
     ViperSlideDirections viperSlideMovement = ViperSlideDirections.NONE;
     IntakeMotorStates intakeMotorMovement = IntakeMotorStates.NONE;
+    boolean facingForward = true;
     boolean drawerSlideOut = false;
     boolean flipMotorOut = false;
     int desiredTicks = 0;
     boolean manualViperControl = true;
+    private boolean finalFoldUsed = false;
+
 
     @Override
     public void runOpMode()
@@ -47,6 +51,17 @@ public class StandardTeleOp extends LinearOpMode {
         }
         else{
             slowModeMultiplier = 0.4;
+        }
+
+        if(gamepad1.ps){
+            facingForward = !facingForward;
+            gamepad1.setLedColor(1,0.4,0, Gamepad.LED_DURATION_CONTINUOUS);
+            robot.FlipDTDirection(facingForward);
+        }
+        else if(gamepad1.touchpad){
+            facingForward = false;
+            gamepad1.setLedColor(0,0,1, Gamepad.LED_DURATION_CONTINUOUS);
+            robot.FlipDTDirection(facingForward);
         }
 
         //Getting desired claw position
@@ -87,11 +102,10 @@ public class StandardTeleOp extends LinearOpMode {
         }
 
         if(gamepad2.touchpad){
-            try {
-                robot.FinalFold();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            finalFoldUsed = true;
+        }
+        else if(gamepad2.ps){
+            finalFoldUsed = false;
         }
 
         if(gamepad2.triangle){
@@ -128,11 +142,21 @@ public class StandardTeleOp extends LinearOpMode {
         else{
             robot.SetViperSlidePos(desiredTicks);
         }
-        
+
+        if(!finalFoldUsed){
+            robot.IntakeSystem(drawerSlideOut, flipMotorOut);
+        }
+        else{
+            robot.FinalFold();
+        }
         robot.SetIntakeMotorMovement(intakeMotorMovement);
-        robot.DriveTrain(slowModeMultiplier, -gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        if(facingForward){
+            robot.DriveTrain(slowModeMultiplier, -gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        }
+        else{
+            robot.DriveTrain(slowModeMultiplier, -gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        }
         robot.SetClawPos(clawClosed);
-        robot.IntakeSystem(drawerSlideOut, flipMotorOut);
     }
 
     protected void SendTelemetry(){

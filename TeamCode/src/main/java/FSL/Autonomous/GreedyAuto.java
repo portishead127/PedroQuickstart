@@ -14,13 +14,14 @@ public class GreedyAuto extends LinearOpMode {
         robot.init(true);
         waitForStart();
 
-        new Thread(() -> robot.SetViperSlidePos(RobotHardware.TopRungEncoders)).start();
-        robot.DriveByEncoderTicks(-563, -696, -728, -713, 0.3);
+        robot.SetViperSlidePos(RobotHardware.TopRungEncoders);
+        sleep(500);
+        robot.DriveByEncoderTicks(-550, -550, -550, -550, 0.2);
         HangingSequence();
-        new Thread(() -> robot.SetViperSlidePos(RobotHardware.BottomEncoders)).start();
+        robot.SetViperSlidePos(RobotHardware.BottomEncoders);
 
-        Rotate180();
         HangingToBullCharge();
+        Rotate180();
         BullChargeToPickup();
         robot.SetClawPos(true);
         PickToOutALittle();
@@ -34,27 +35,27 @@ public class GreedyAuto extends LinearOpMode {
     }
 
     void HangingToBullCharge(){
-        robot.DriveByEncoderTicks(841, -842, 931, -905, 0.3);
+        robot.DriveByEncoderTicks(1283, -1783, -1783, -1369, 0.3);
     }
 
     void BullChargeToPickup(){
-        robot.DriveByEncoderTicks(-605, -705, -709, -713, 0.6);
+        robot.DriveByEncoderTicks(-672, -675, -684, -687, 0.4);
     }
 
     void PickToOutALittle(){
-        robot.DriveByEncoderTicks(208, 280, 252, 266, 0.25);
+        robot.DriveByEncoderTicks(272, 284, 284, 266, 0.25);
     }
 
     void OutALittleToHang(){
-        robot.DriveByEncoderTicks(588, -1350, 597, -1369, 0.3);
+        robot.DriveByEncoderTicks(1072, -1844, -1783, -1369, 0.3);
     }
 
     void ForwardALittle(){
-        robot.DriveByEncoderTicks(-57,-71,-91, -81, 0.2);
+        robot.DriveByEncoderTicks(-57,-71,-91, -81, 0.25);
     }
 
     void Rotate180(){
-        robot.DriveByEncoderTicks(1328, -1385, -1442, 1403, 0.35);
+        robot.DriveByEncoderTicks(1328, -1385, -1442, 1403, 0.2);
     }
 
     void Ending(){
@@ -62,8 +63,8 @@ public class GreedyAuto extends LinearOpMode {
     }
 
     void HangingSequence(){
-        ForwardALittle();
-        robot.SetViperSlidePos(RobotHardware.TopRungEncoders - 200);
+        robot.SetViperSlidePos(RobotHardware.TopRungEncoders - 800);
+        sleep(750);
         robot.SetClawPos(false);
     }
 }
