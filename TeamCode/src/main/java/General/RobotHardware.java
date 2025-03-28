@@ -1,17 +1,11 @@
 package General;
 
-import android.content.Context;
 import android.media.SoundPool;
 
-import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.R;
-
-import java.net.ContentHandler;
 
 enum ViperSlideDirections { UPWARDS, DOWNWARDS, NONE }
 enum IntakeMotorStates{ IN, OUT, NONE }
@@ -34,7 +28,7 @@ public class RobotHardware {
     public static final double CircumferenceOfWheelInMeters = 0.2356;
     public static final double WheelMotorEncoderResolution = 336;
     public static final double WheelbaseInInches = 0.388;
-    public static final int TopRungRevsRight = 3230;
+    public static final int TopRungEncoders = 3230;
     public static final int BottomEncoders = 20;
     public SoundPool sounds;
     // Define a constructor that allows the OpMode to pass a reference to itself.
@@ -176,7 +170,7 @@ public class RobotHardware {
         SetViperSlideModes(DcMotor.RunMode.RUN_USING_ENCODER);
         switch(viperSlideMovement) {
             case UPWARDS:
-                if(rightViperSlide.getCurrentPosition() < TopRungRevsRight + 500) { //SOFTWARE STOP
+                if(rightViperSlide.getCurrentPosition() < TopRungEncoders + 500) { //SOFTWARE STOP
                     leftViperSlide.setDirection(DcMotorSimple.Direction.FORWARD);
                     rightViperSlide.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -248,8 +242,13 @@ public class RobotHardware {
         leftViperSlide.setTargetPosition(encoderCounts);
         SetViperSlideModes(DcMotor.RunMode.RUN_TO_POSITION);
 
-        rightViperSlide.setPower(1.0);
-        leftViperSlide.setPower(1.0);
+        while(rightViperSlide.isBusy() || leftViperSlide.isBusy()){
+            leftViperSlide.setPower(1.0);
+            rightViperSlide.setPower(1.0);
+        }
+
+        leftViperSlide.setPower(0);
+        rightViperSlide.setPower(0);
     }
     public void IntakeSystem(boolean slideOut, boolean flipMotorOut) {
         SetFlipMotorPos(flipMotorOut);

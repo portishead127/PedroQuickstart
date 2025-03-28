@@ -2,7 +2,6 @@ package General;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.robot.Robot;
 
 @TeleOp(name="StandardTeleOp", group="Robot")
 public class StandardTeleOp extends LinearOpMode {
@@ -99,11 +98,11 @@ public class StandardTeleOp extends LinearOpMode {
         }
 
         if(gamepad1.dpad_up){
-            desiredTicks = RobotHardware.TopRungRevsRight;
+            desiredTicks = RobotHardware.TopRungEncoders;
             manualViperControl = false;
         }
         else if(gamepad1.dpad_down){
-            desiredTicks = 0;
+            desiredTicks = RobotHardware.BottomEncoders;
             manualViperControl = false;
         }
 

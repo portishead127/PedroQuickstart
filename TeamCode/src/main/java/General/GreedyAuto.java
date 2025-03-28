@@ -12,16 +12,22 @@ public class GreedyAuto extends LinearOpMode {
         robot.init(true);
         waitForStart();
 
-        robot.DriveByEncoderTicks(-563, -696, -728, -713, 0.4);
-        for(int i = 0; i < 2; i++){
-            Rotate180();
-            HangingToBullCharge();
-            BullChargeToPickup();
-            PickToOutALittle();
-            Rotate180();
-            OutALittleToHang();
-            ForwardALittle();
-        }
+        new Thread(() -> robot.SetViperSlidePos(RobotHardware.TopRungEncoders)).start();
+        robot.DriveByEncoderTicks(-563, -696, -728, -713, 0.3);
+        HangingSequence();
+        new Thread(() -> robot.SetViperSlidePos(RobotHardware.BottomEncoders)).start();
+
+        Rotate180();
+        HangingToBullCharge();
+        BullChargeToPickup();
+        robot.SetClawPos(true);
+        PickToOutALittle();
+        Rotate180();
+
+        OutALittleToHang();
+        robot.SetViperSlidePos(RobotHardware.TopRungEncoders);
+        HangingSequence();
+
         Ending();
     }
 
@@ -30,7 +36,7 @@ public class GreedyAuto extends LinearOpMode {
     }
 
     void BullChargeToPickup(){
-        robot.DriveByEncoderTicks(-605, -705, -709, -713, 0.8);
+        robot.DriveByEncoderTicks(-605, -705, -709, -713, 0.6);
     }
 
     void PickToOutALittle(){
@@ -51,5 +57,11 @@ public class GreedyAuto extends LinearOpMode {
 
     void Ending(){
         robot.DriveByEncoderTicks(-1131, 1725, -1139, 1671, 0.9);
+    }
+
+    void HangingSequence(){
+        ForwardALittle();
+        robot.SetViperSlidePos(RobotHardware.TopRungEncoders - 200);
+        robot.SetClawPos(false);
     }
 }
