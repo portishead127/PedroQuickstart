@@ -1,9 +1,9 @@
-package General;
+package FSL.TeleOps;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name = "Planning", group = "Robot")
+@TeleOp(name = "Planning", group = "FSL")
 public class PlanningTeleOp extends StandardTeleOp {
     @Override
     public void runOpMode() {

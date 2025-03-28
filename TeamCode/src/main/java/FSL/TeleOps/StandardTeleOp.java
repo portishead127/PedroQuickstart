@@ -1,9 +1,13 @@
-package General;
+package FSL.TeleOps;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="StandardTeleOp", group="Robot")
+import FSL.Enums.IntakeMotorStates;
+import FSL.Enums.ViperSlideDirections;
+import FSL.HardwareMaps.RobotHardware;
+
+@TeleOp(name="StandardTeleOp", group="FSL")
 public class StandardTeleOp extends LinearOpMode {
 
     // Create a RobotHardware object to be used to access robot hardware.
@@ -119,7 +123,7 @@ public class StandardTeleOp extends LinearOpMode {
 
     protected void ApplyInput(){
         if(manualViperControl){
-            robot.SetViperSlideMovement(slowModeMultiplier, viperSlideMovement);
+            robot.SetViperSlideMovement(viperSlideMovement);
         }
         else{
             robot.SetViperSlidePos(desiredTicks);

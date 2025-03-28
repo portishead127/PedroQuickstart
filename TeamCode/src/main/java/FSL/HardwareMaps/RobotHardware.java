@@ -1,14 +1,13 @@
-package General;
-
-import android.media.SoundPool;
+package FSL.HardwareMaps;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-enum ViperSlideDirections { UPWARDS, DOWNWARDS, NONE }
-enum IntakeMotorStates{ IN, OUT, NONE }
+import FSL.Enums.IntakeMotorStates;
+import FSL.Enums.ViperSlideDirections;
+
 
 public class RobotHardware {
     private final LinearOpMode myOpMode;   // gain access to methods in the calling OpMode.
@@ -24,13 +23,8 @@ public class RobotHardware {
     private DcMotor leftViperSlide = null;
     private DcMotor rightViperSlide = null;
     private Servo viperSlideClaw = null;
-    public static final int ViperSlideMotorEncoderResolution = 752;
-    public static final double CircumferenceOfWheelInMeters = 0.2356;
-    public static final double WheelMotorEncoderResolution = 336;
-    public static final double WheelbaseInInches = 0.388;
     public static final int TopRungEncoders = 3230;
     public static final int BottomEncoders = 20;
-    public SoundPool sounds;
     // Define a constructor that allows the OpMode to pass a reference to itself.
     public RobotHardware(LinearOpMode opmode)
     {
@@ -106,7 +100,7 @@ public class RobotHardware {
         backRight.setMode(runMode);
     }
 
-    public void DriveTrain(double slowModeMult, double y, double x, double rx){
+    public void DriveTrain(double slowModeMultiplier, double y, double x, double rx){
         //AP: Don't even ask me how this works, I'm not a vectors wizard.... gm0.com
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         double frontLeftPower = (y + x + rx) / denominator;
@@ -115,10 +109,10 @@ public class RobotHardware {
         double backRightPower = (y + x - rx) / denominator;
 
 
-        frontLeftPower *= slowModeMult;
-        backLeftPower *= slowModeMult;
-        frontRightPower *= slowModeMult;//bad
-        backRightPower *= slowModeMult;
+        frontLeftPower *= slowModeMultiplier;
+        backLeftPower *= slowModeMultiplier;
+        frontRightPower *= slowModeMultiplier;//bad wheel
+        backRightPower *= slowModeMultiplier;
 
 
         frontLeft.setPower(frontLeftPower);
@@ -166,7 +160,7 @@ public class RobotHardware {
             viperSlideClaw.setPosition(0.35);
         }
     }
-    public void SetViperSlideMovement(double slowModeMult, ViperSlideDirections viperSlideMovement){
+    public void SetViperSlideMovement(ViperSlideDirections viperSlideMovement){
         SetViperSlideModes(DcMotor.RunMode.RUN_USING_ENCODER);
         switch(viperSlideMovement) {
             case UPWARDS:
@@ -213,7 +207,7 @@ public class RobotHardware {
                 break;
         }
     }
-    public void SetDrawerSlidePos(boolean slideOut){ //RIGHT SLIDE MAXXED -> MAX EXTENSION
+    public void SetDrawerSlidePos(boolean slideOut){ //RIGHT SLIDE MAXED -> MAX EXTENSION
         if(slideOut){
             rightSlideMotor.setPosition(1);
             leftSlideMotor.setPosition(0);

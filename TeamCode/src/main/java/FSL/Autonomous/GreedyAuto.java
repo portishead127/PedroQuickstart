@@ -1,9 +1,11 @@
-package General;
+package FSL.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "Greedy Auto", group = "Robot")
+import FSL.HardwareMaps.RobotHardware;
+
+@Autonomous(name = "Greedy Auto", group = "FSL")
 public class GreedyAuto extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware(this);
